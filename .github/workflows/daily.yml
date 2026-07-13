@@ -1,0 +1,37 @@
+name: Daily data refresh
+
+on:
+  schedule:
+    # 04:00 UTC ≈ 06:00 Europe/Zurich (summer)
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build data
+        env:
+          AA_API_KEY: ${{ secrets.AA_API_KEY }}
+        run: node pipeline/build.mjs
+
+      - name: Commit data if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "No data changes — nothing to commit."
+          else
+            git commit -m "chore(data): daily refresh $(date -u +%F)"
+            git push
+          fi

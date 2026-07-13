@@ -1,0 +1,117 @@
+{
+  "_readme": "Subscription / free-chat access options, maintained BY HAND (no public API exists for subscription pricing). display = 'FR|EN' string shown in the UI. price_usd is approximate for non-USD plans. verified + verified_date drive the 'verified on…' badge. Weekly manual check against official pricing pages.",
+  "subscriptions": [
+    {
+      "name": "Claude Pro",
+      "price_usd": 20,
+      "display": "$20/mois|$20/mo",
+      "url": "https://www.anthropic.com/pricing",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "ChatGPT Plus",
+      "price_usd": 20,
+      "display": "$20/mois|$20/mo",
+      "url": "https://openai.com/chatgpt/pricing/",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "Google AI Pro",
+      "price_usd": 19.99,
+      "display": "$19.99/mois|$19.99/mo",
+      "url": "https://one.google.com/about/google-ai-plans/",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "Google AI Plus",
+      "price_usd": 4.99,
+      "display": "$4.99/mois|$4.99/mo",
+      "url": "https://one.google.com/about/google-ai-plans/",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "Perplexity Pro",
+      "price_usd": 20,
+      "display": "$20/mois|$20/mo",
+      "url": "https://www.perplexity.ai/pro",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "SuperGrok",
+      "price_usd": 30,
+      "display": "~$30/mois|~$30/mo",
+      "url": "https://x.ai/grok",
+      "verified": false,
+      "verified_date": null
+    },
+    {
+      "name": "Le Chat Pro",
+      "price_usd": 16,
+      "display": "~15€/mois|~€15/mo",
+      "url": "https://mistral.ai/products/le-chat",
+      "verified": false,
+      "verified_date": null
+    },
+    {
+      "name": "chat.deepseek.com",
+      "price_usd": 0,
+      "display": "0|0",
+      "url": "https://chat.deepseek.com",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "chat.z.ai",
+      "price_usd": 0,
+      "display": "0|0",
+      "url": "https://chat.z.ai",
+      "verified": false,
+      "verified_date": null
+    },
+    {
+      "name": "chat.qwen.ai",
+      "price_usd": 0,
+      "display": "0|0",
+      "url": "https://chat.qwen.ai",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "kimi.com",
+      "price_usd": 0,
+      "display": "0|0",
+      "url": "https://kimi.com",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "meta.ai",
+      "price_usd": 0,
+      "display": "0|0",
+      "url": "https://meta.ai",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "chat.publicai.co",
+      "price_usd": 0,
+      "display": "0|0",
+      "url": "https://chat.publicai.co",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    },
+    {
+      "name": "open source (self-host)",
+      "price_usd": 0,
+      "display": "0|0",
+      "url": "https://huggingface.co/swiss-ai",
+      "verified": true,
+      "verified_date": "2026-07-13"
+    }
+  ]
+}

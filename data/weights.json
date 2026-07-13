@@ -1,0 +1,31 @@
+{
+  "_readme": "Weights per use case — THE transparent heart of the scoring. Each usage score /100 = weighted average of the components below. Scale: AA indexes (artificial_analysis_*_index) are used as-is (~0-100); AA benchmarks (0-1) are multiplied by 100; web_access & editorial_crea are editorial fields (0-100) from models.json; context_log is the OpenRouter context window log-normalized between fixed anchors (16K → 0, 2M → 100) — fixed anchors, NOT cohort min-max, so scores stay stable day after day. If a component is null for a model, the remaining weights are renormalized. Missing data is never invented.",
+  "version": 1,
+  "context_log_anchors": { "min_tokens": 16000, "max_tokens": 2000000 },
+  "usages": {
+    "redaction": {
+      "mmlu_pro": 0.4,
+      "ifbench": 0.3,
+      "aa_intelligence_index": 0.3
+    },
+    "code": {
+      "aa_coding_index": 0.5,
+      "livecodebench": 0.3,
+      "terminalbench_hard": 0.2
+    },
+    "recherche": {
+      "tau2": 0.5,
+      "aa_intelligence_index": 0.3,
+      "web_access": 0.2
+    },
+    "docs": {
+      "lcr": 0.5,
+      "mmlu_pro": 0.3,
+      "context_log": 0.2
+    },
+    "crea": {
+      "aa_intelligence_index": 0.6,
+      "editorial_crea": 0.4
+    }
+  }
+}

@@ -1,0 +1,455 @@
+{
+  "updated_at": "2026-07-13T15:35:25.874Z",
+  "updated": "2026-07-13",
+  "scores_demo": false,
+  "sources": {
+    "prices": "openrouter",
+    "benchmarks": "Artificial Analysis",
+    "attribution": "Benchmark data: Artificial Analysis (https://artificialanalysis.ai)"
+  },
+  "badges": {
+    "redaction": {
+      "top": "gpt56sol",
+      "value": "dsv4pro",
+      "budget": "dsv4pro"
+    },
+    "code": {
+      "top": "gpt56sol",
+      "value": "dsv4pro",
+      "budget": "glm52"
+    },
+    "recherche": {
+      "top": "opus48",
+      "value": "glm52",
+      "budget": "dsv4pro"
+    },
+    "docs": {
+      "top": "gpt56luna",
+      "value": "glm52",
+      "budget": "llama4m"
+    },
+    "crea": {
+      "top": "gpt56sol",
+      "value": "dsv4pro",
+      "budget": "glm52"
+    }
+  },
+  "models": [
+    {
+      "id": "opus48",
+      "name": "Claude Opus 4.8",
+      "provider": "Anthropic",
+      "in": 5,
+      "out": 25,
+      "ctx": "1M",
+      "ctx_tokens": 1000000,
+      "sub": {
+        "fr": "Claude Pro",
+        "en": "Claude Pro"
+      },
+      "subPrice": "$20/mois|$20/mo",
+      "sub_url": "https://www.anthropic.com/pricing",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [],
+      "scores": {
+        "redaction": 59,
+        "code": 70,
+        "recherche": 79,
+        "docs": 73,
+        "crea": 71
+      }
+    },
+    {
+      "id": "sonnet5",
+      "name": "Claude Sonnet 5",
+      "provider": "Anthropic",
+      "in": 2,
+      "out": 10,
+      "ctx": "1M",
+      "ctx_tokens": 1000000,
+      "sub": {
+        "fr": "Claude Pro",
+        "en": "Claude Pro"
+      },
+      "subPrice": "$20/mois|$20/mo",
+      "sub_url": "https://www.anthropic.com/pricing",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [],
+      "scores": {
+        "redaction": 53,
+        "code": 72,
+        "recherche": 62,
+        "docs": 75,
+        "crea": 67
+      }
+    },
+    {
+      "id": "gpt56sol",
+      "name": "GPT-5.6 Sol",
+      "provider": "OpenAI",
+      "in": 5,
+      "out": 30,
+      "ctx": "1M",
+      "ctx_tokens": 1050000,
+      "sub": {
+        "fr": "ChatGPT Plus",
+        "en": "ChatGPT Plus"
+      },
+      "subPrice": "$20/mois|$20/mo",
+      "sub_url": "https://openai.com/chatgpt/pricing/",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [],
+      "scores": {
+        "redaction": 66,
+        "code": 74,
+        "recherche": 77,
+        "docs": 77,
+        "crea": 72
+      }
+    },
+    {
+      "id": "gpt56luna",
+      "name": "GPT-5.6 Luna",
+      "provider": "OpenAI",
+      "in": 1,
+      "out": 6,
+      "ctx": "1M",
+      "ctx_tokens": 1050000,
+      "sub": {
+        "fr": "ChatGPT Plus",
+        "en": "ChatGPT Plus"
+      },
+      "subPrice": "$20/mois|$20/mo",
+      "sub_url": "https://openai.com/chatgpt/pricing/",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [],
+      "scores": {
+        "redaction": 51,
+        "code": 71,
+        "recherche": 63,
+        "docs": 78,
+        "crea": 65
+      }
+    },
+    {
+      "id": "gem31pro",
+      "name": "Gemini 3.1 Pro",
+      "provider": "Google",
+      "in": 2,
+      "out": 12,
+      "ctx": "1M",
+      "ctx_tokens": 1048576,
+      "sub": {
+        "fr": "Google AI Pro",
+        "en": "Google AI Pro"
+      },
+      "subPrice": "$19.99/mois|$19.99/mo",
+      "sub_url": "https://one.google.com/about/google-ai-plans/",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [],
+      "scores": {
+        "redaction": 62,
+        "code": 65,
+        "recherche": 79,
+        "docs": 77,
+        "crea": 64
+      }
+    },
+    {
+      "id": "gem35fl",
+      "name": "Gemini 3.5 Flash",
+      "provider": "Google",
+      "in": 1.5,
+      "out": 9,
+      "ctx": "1M",
+      "ctx_tokens": 1048576,
+      "sub": {
+        "fr": "Google AI Pro",
+        "en": "Google AI Pro"
+      },
+      "subPrice": "$19.99/mois|$19.99/mo",
+      "sub_url": "https://one.google.com/about/google-ai-plans/",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [],
+      "scores": {
+        "redaction": 63,
+        "code": 62,
+        "recherche": 79,
+        "docs": 74,
+        "crea": 63
+      }
+    },
+    {
+      "id": "grok45",
+      "name": "Grok 4.5",
+      "provider": "xAI",
+      "in": 2,
+      "out": 6,
+      "ctx": "500K",
+      "ctx_tokens": 500000,
+      "sub": {
+        "fr": "SuperGrok",
+        "en": "SuperGrok"
+      },
+      "subPrice": "~$30/mois|~$30/mo",
+      "sub_url": "https://x.ai/grok",
+      "verified": false,
+      "verified_date": null,
+      "tags": [],
+      "scores": {
+        "redaction": 54,
+        "code": 72,
+        "recherche": 70,
+        "docs": 69,
+        "crea": 67
+      }
+    },
+    {
+      "id": "dsv4pro",
+      "name": "DeepSeek V4 Pro",
+      "provider": "DeepSeek",
+      "in": 0.44,
+      "out": 0.87,
+      "ctx": "1M",
+      "ctx_tokens": 1048576,
+      "sub": {
+        "fr": "chat.deepseek.com",
+        "en": "chat.deepseek.com"
+      },
+      "subPrice": "0|0",
+      "sub_url": "https://chat.deepseek.com",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [
+        "open"
+      ],
+      "scores": {
+        "redaction": 60,
+        "code": 56,
+        "recherche": 73,
+        "docs": 72,
+        "crea": 59
+      }
+    },
+    {
+      "id": "glm52",
+      "name": "GLM-5.2",
+      "provider": "Zhipu · Z.ai",
+      "in": 0.93,
+      "out": 3,
+      "ctx": "1M",
+      "ctx_tokens": 1048576,
+      "sub": {
+        "fr": "chat.z.ai",
+        "en": "chat.z.ai"
+      },
+      "subPrice": "0|0",
+      "sub_url": "https://chat.z.ai",
+      "verified": false,
+      "verified_date": null,
+      "tags": [
+        "open"
+      ],
+      "scores": {
+        "redaction": 62,
+        "code": 64,
+        "recherche": 76,
+        "docs": 76,
+        "crea": 62
+      }
+    },
+    {
+      "id": "qwen3max",
+      "name": "Qwen3 Max Thinking",
+      "provider": "Alibaba",
+      "in": 0.78,
+      "out": 3.9,
+      "ctx": "262K",
+      "ctx_tokens": 262144,
+      "sub": {
+        "fr": "chat.qwen.ai",
+        "en": "chat.qwen.ai"
+      },
+      "subPrice": "0|0",
+      "sub_url": "https://chat.qwen.ai",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [],
+      "scores": {
+        "redaction": 51,
+        "code": 24,
+        "recherche": 63,
+        "docs": 64,
+        "crea": 50
+      }
+    },
+    {
+      "id": "kimik26",
+      "name": "Kimi K2.6",
+      "provider": "Moonshot",
+      "in": 0.66,
+      "out": 3.41,
+      "ctx": "262K",
+      "ctx_tokens": 262144,
+      "sub": {
+        "fr": "kimi.com",
+        "en": "kimi.com"
+      },
+      "subPrice": "0|0",
+      "sub_url": "https://kimi.com",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [
+        "open"
+      ],
+      "scores": {
+        "redaction": 60,
+        "code": 57,
+        "recherche": 73,
+        "docs": 66,
+        "crea": 58
+      }
+    },
+    {
+      "id": "mistralL",
+      "name": "Mistral Large 2512",
+      "provider": "Mistral AI",
+      "in": 0.5,
+      "out": 1.5,
+      "ctx": "262K",
+      "ctx_tokens": 262144,
+      "sub": {
+        "fr": "Le Chat Pro",
+        "en": "Le Chat Pro"
+      },
+      "subPrice": "~15€/mois|~€15/mo",
+      "sub_url": "https://mistral.ai/products/le-chat",
+      "verified": false,
+      "verified_date": null,
+      "tags": [
+        "eu"
+      ],
+      "scores": {
+        "redaction": 48,
+        "code": 27,
+        "recherche": 29,
+        "docs": 53,
+        "crea": 41
+      }
+    },
+    {
+      "id": "llama4m",
+      "name": "Llama 4 Maverick",
+      "provider": "Meta",
+      "in": 0.2,
+      "out": 0.8,
+      "ctx": "1M",
+      "ctx_tokens": 1048576,
+      "sub": {
+        "fr": "meta.ai",
+        "en": "meta.ai"
+      },
+      "subPrice": "0|0",
+      "sub_url": "https://meta.ai",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [
+        "open"
+      ],
+      "scores": {
+        "redaction": 50,
+        "code": 21,
+        "recherche": 21,
+        "docs": 65,
+        "crea": 38
+      }
+    },
+    {
+      "id": "sonarpro",
+      "name": "Sonar Pro Search",
+      "provider": "Perplexity",
+      "in": 3,
+      "out": 15,
+      "ctx": "200K",
+      "ctx_tokens": 200000,
+      "sub": {
+        "fr": "Perplexity Pro",
+        "en": "Perplexity Pro"
+      },
+      "subPrice": "$20/mois|$20/mo",
+      "sub_url": "https://www.perplexity.ai/pro",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [],
+      "scores": {
+        "redaction": 47,
+        "code": 28,
+        "recherche": 46,
+        "docs": 66,
+        "crea": 34
+      }
+    },
+    {
+      "id": "apertus70",
+      "name": "Apertus 70B",
+      "provider": "EPFL / ETH Zurich",
+      "in": 0,
+      "out": 0,
+      "ctx": "65K",
+      "ctx_tokens": 65536,
+      "sub": {
+        "fr": "chat.publicai.co",
+        "en": "chat.publicai.co"
+      },
+      "subPrice": "0|0",
+      "sub_url": "https://chat.publicai.co",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [
+        "swiss",
+        "open"
+      ],
+      "scores": {
+        "redaction": 14,
+        "code": 0,
+        "recherche": 7,
+        "docs": 8,
+        "crea": 25
+      }
+    },
+    {
+      "id": "apertus8",
+      "name": "Apertus 8B",
+      "provider": "EPFL / ETH Zurich",
+      "in": 0,
+      "out": 0,
+      "ctx": "65K",
+      "ctx_tokens": 65536,
+      "sub": {
+        "fr": "open source (self-host)",
+        "en": "open source (self-host)"
+      },
+      "subPrice": "0|0",
+      "sub_url": "https://huggingface.co/swiss-ai",
+      "verified": true,
+      "verified_date": "2026-07-13",
+      "tags": [
+        "swiss",
+        "open"
+      ],
+      "scores": {
+        "redaction": 12,
+        "code": 0,
+        "recherche": 6,
+        "docs": 8,
+        "crea": 21
+      }
+    }
+  ]
+}

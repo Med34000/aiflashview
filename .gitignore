@@ -1,0 +1,15 @@
+# Secrets — la clé AA vit dans .env en local et dans les secrets GitHub en CI
+.env
+
+# Node
+node_modules/
+
+# Documents de travail internes (spec + maquette) — pas dans le repo public
+2026-07-13_*
+
+# OS
+.DS_Store
+
+# Caches d'outils locaux
+.impeccable/
+.claude/

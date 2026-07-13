@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-FlashView — Quelle IA pour quoi, à quel prix</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+  :root{
+    --bg:#0b0f1a; --panel:#121829; --panel2:#1a2138; --border:#232c47;
+    --txt:#e8ecf6; --muted:#8b95b0; --accent:#22d3ee; --accent2:#a78bfa;
+    --ok:#34d399; --warn:#fbbf24; --gold:#f59e0b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+
+  /* Header */
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .logo{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+  .logo .flash{color:var(--accent)}
+  .logo .badge-os{font-size:.65rem;font-weight:600;color:var(--accent2);border:1px solid var(--accent2);border-radius:99px;padding:2px 8px;vertical-align:middle;margin-left:8px}
+  .lang-toggle{display:flex;border:1px solid var(--border);border-radius:99px;overflow:hidden}
+  .lang-toggle button{background:none;border:none;color:var(--muted);padding:6px 14px;cursor:pointer;font-weight:600;font-size:.85rem}
+  .lang-toggle button.active{background:var(--panel2);color:var(--txt)}
+  .tagline{color:var(--muted);font-size:1.05rem;margin-bottom:4px}
+  .updated{font-size:.8rem;color:var(--muted);margin-bottom:20px}
+  .updated .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px;animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.4}}
+
+  /* Bandeau scores démo (affiché seulement si scores_demo:true) */
+  .demo-banner{display:none;background:linear-gradient(90deg,rgba(251,191,36,.12),rgba(167,139,250,.12));border:1px solid rgba(251,191,36,.4);border-radius:10px;padding:10px 14px;font-size:.85rem;margin-bottom:24px;color:#fde68a}
+
+  /* Usage chips */
+  .usages{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{background:var(--panel);border:1px solid var(--border);color:var(--txt);border-radius:99px;padding:9px 16px;cursor:pointer;font-size:.92rem;font-weight:600;transition:all .15s}
+  .chip:hover{border-color:var(--accent)}
+  .chip.active{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b0f1a;border-color:transparent}
+
+  /* Sort */
+  .toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+  .sort{display:flex;gap:6px;align-items:center;font-size:.85rem;color:var(--muted)}
+  .sort button{background:var(--panel);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:.82rem;font-weight:600}
+  .sort button.active{color:var(--accent);border-color:var(--accent)}
+  .count{font-size:.85rem;color:var(--muted)}
+
+  /* Cards */
+  .grid{display:flex;flex-direction:column;gap:10px}
+  .card{display:grid;grid-template-columns:44px 1.6fr 1.4fr 1fr 1fr;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 18px;transition:border-color .15s}
+  .card:hover{border-color:#3b4a75}
+  .card.top1{border-color:var(--gold);background:linear-gradient(90deg,rgba(245,158,11,.07),var(--panel) 40%)}
+  .rank{font-size:1.3rem;font-weight:800;color:var(--muted);text-align:center}
+  .top1 .rank{color:var(--gold)}
+  .model .name{font-weight:700;font-size:1.02rem}
+  .model .provider{font-size:.8rem;color:var(--muted)}
+  .model .flags{margin-top:4px;display:flex;gap:5px;flex-wrap:wrap}
+  .tag{font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:.02em}
+  .tag.gold{background:rgba(245,158,11,.15);color:var(--gold);border:1px solid rgba(245,158,11,.4)}
+  .tag.value{background:rgba(52,211,153,.12);color:var(--ok);border:1px solid rgba(52,211,153,.4)}
+  .tag.budget{background:rgba(34,211,238,.1);color:var(--accent);border:1px solid rgba(34,211,238,.4)}
+  .tag.eu{background:rgba(167,139,250,.12);color:var(--accent2);border:1px solid rgba(167,139,250,.4)}
+  .tag.open{background:rgba(139,149,176,.12);color:var(--muted);border:1px solid var(--border)}
+  .tag.swiss{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.4)}
+  .info-banner{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.35);border-radius:10px;padding:10px 14px;font-size:.85rem;margin-bottom:14px;color:#a5f3fc}
+  .tok{margin-bottom:14px;background:linear-gradient(90deg,rgba(34,211,238,.09),rgba(167,139,250,.09));border:1px solid rgba(34,211,238,.5);border-radius:14px;padding:14px 18px;box-shadow:0 0 18px rgba(34,211,238,.07)}
+  .tok summary{cursor:pointer;font-weight:800;color:var(--accent);font-size:1.02rem}
+  .tok summary:hover{text-decoration:underline}
+  .tok p{margin:8px 0;font-size:.88rem;color:var(--muted)}
+  .tok b{color:var(--txt)}
+
+  /* Réponse express : les 3 gagnants de la vue courante */
+  .reco{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .reco .pick{flex:1;min-width:170px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 14px}
+  .reco .pick.gold{border-color:rgba(245,158,11,.5)}
+  .reco .pick .k{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+  .reco .pick .v{font-weight:800;font-size:1rem}
+  .reco .pick .p{font-size:.78rem;color:var(--muted)}
+
+  /* Détails dépliables par carte */
+  .card{position:relative;cursor:pointer}
+  .chev{position:absolute;top:10px;right:14px;color:var(--muted);font-size:.75rem;transition:transform .15s}
+  .card.exp .chev{transform:rotate(90deg);color:var(--accent)}
+  .det{display:none;grid-column:1/-1;border-top:1px solid var(--border);margin-top:8px;padding-top:12px;grid-template-columns:repeat(3,1fr);gap:10px 16px}
+  .card.exp .det{display:grid}
+  .det .k{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+  .det .v{font-size:.88rem;font-weight:600}
+  .det .wide{grid-column:1/-1}
+  .det .note{grid-column:1/-1;font-size:.75rem;color:var(--muted);font-style:italic}
+  @media(max-width:760px){ .det{grid-template-columns:1fr 1fr} }
+  .collections{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .chip.coll.active{background:var(--panel2);color:var(--txt);border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+
+  .scorebox .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+  .scorebar{background:var(--panel2);border-radius:99px;height:10px;overflow:hidden;margin-bottom:4px}
+  .scorebar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .scoreval{font-weight:800;font-size:1.05rem}
+  .scoreval small{font-weight:500;color:var(--muted);font-size:.75rem}
+
+  .price .lbl,.sub .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+  .price .val,.sub .val{font-weight:700;font-size:.95rem}
+  .price .detail,.sub .detail{font-size:.76rem;color:var(--muted)}
+  .verif{font-size:.68rem;margin-top:3px}
+  .verif.ok{color:var(--ok)}
+  .verif.todo{color:var(--warn)}
+
+  /* Footer / methodo */
+  details{margin-top:34px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px 20px}
+  summary{cursor:pointer;font-weight:700;color:var(--accent)}
+  details p{margin:10px 0;font-size:.9rem;color:var(--muted)}
+  footer{margin-top:28px;font-size:.8rem;color:var(--muted);border-top:1px solid var(--border);padding-top:18px}
+  footer a{color:var(--accent);text-decoration:none}
+
+  @media(max-width:760px){
+    .card{grid-template-columns:32px 1fr;grid-template-areas:"rank model" "rank score" "rank sub" "rank price"}
+    .rank{grid-area:rank;align-self:start;padding-top:4px}
+    .model{grid-area:model}.scorebox{grid-area:score}.sub{grid-area:sub}.price{grid-area:price}
+    .scorebox,.sub,.price{margin-top:8px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">⚡ AI-Flash<span class="flash">View</span><span class="badge-os">OPEN SOURCE</span></div>
+    <div class="lang-toggle">
+      <button id="btn-fr" class="active" onclick="setLang('fr')">FR</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </header>
+
+  <p class="tagline" data-i18n="tagline"></p>
+  <p class="updated"><span class="dot"></span><span id="updated-txt"></span></p>
+
+  <div class="demo-banner" id="demo-banner"></div>
+
+  <div class="collections" id="collections"></div>
+  <div class="usages" id="usages"></div>
+  <div id="freebanner"></div>
+
+  <details class="tok">
+    <summary data-i18n="tokTitle"></summary>
+    <p data-i18n="tok1"></p>
+    <p data-i18n="tok2"></p>
+    <p data-i18n="tok3"></p>
+  </details>
+
+  <div class="reco" id="reco"></div>
+
+  <div class="toolbar">
+    <div class="sort">
+      <span data-i18n="sortby"></span>
+      <button id="sort-score" class="active" onclick="setSort('score')" data-i18n="sortScore"></button>
+      <button id="sort-price" onclick="setSort('price')" data-i18n="sortPrice"></button>
+    </div>
+    <div class="count" id="count"></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <details>
+    <summary data-i18n="methodoTitle"></summary>
+    <p data-i18n="methodo1"></p>
+    <p data-i18n="methodo2"></p>
+    <p data-i18n="methodo3"></p>
+  </details>
+
+  <footer>
+    <span data-i18n="footer1"></span>
+    <a href="https://artificialanalysis.ai" target="_blank" rel="noopener">Artificial Analysis</a> ·
+    <a href="https://openrouter.ai" target="_blank" rel="noopener">OpenRouter</a> ·
+    <a href="https://lmarena.ai" target="_blank" rel="noopener">LMArena</a>
+    <br><span data-i18n="footer2"></span> <a href="https://romande-ia.ch" target="_blank" rel="noopener">romande-ia.ch</a> — IAtelier · MIT License
+  </footer>
+</div>
+
+<script>
+// ============ DONNÉES ============
+// DATA est remplacé au chargement par data/latest.json (généré chaque jour par le pipeline).
+// Le snapshot inline ci-dessous sert de fallback (ouverture en file://, ou latest.json inaccessible) :
+// prix réels OpenRouter du 2026-07-13, scores de démonstration → scores_demo:true.
+let DATA = {
+  updated: "2026-07-13",
+  updated_at: "2026-07-13T00:00:00.000Z",
+  scores_demo: true,
+  models: [
+    {id:"opus48",  name:"Claude Opus 4.8",     provider:"Anthropic",  in:5.00, out:25.00, ctx:"1M",   sub:{fr:"Claude Pro",en:"Claude Pro"}, subPrice:"$20/mois|$20/mo", verified:true, verified_date:"2026-07-13", tags:[],       scores:{redaction:95, code:97, recherche:82, docs:96, crea:93}},
+    {id:"sonnet5", name:"Claude Sonnet 5",     provider:"Anthropic",  in:2.00, out:10.00, ctx:"1M",   sub:{fr:"Claude Pro",en:"Claude Pro"}, subPrice:"$20/mois|$20/mo", verified:true, verified_date:"2026-07-13", tags:[],       scores:{redaction:90, code:92, recherche:78, docs:91, crea:88}},
+    {id:"gpt56sol",name:"GPT-5.6 Sol",         provider:"OpenAI",     in:5.00, out:30.00, ctx:"1M",   sub:{fr:"ChatGPT Plus",en:"ChatGPT Plus"}, subPrice:"$20/mois|$20/mo", verified:true, verified_date:"2026-07-13", tags:[],   scores:{redaction:94, code:95, recherche:88, docs:93, crea:92}},
+    {id:"gpt56luna",name:"GPT-5.6 Luna",       provider:"OpenAI",     in:1.00, out:6.00,  ctx:"1M",   sub:{fr:"ChatGPT Plus",en:"ChatGPT Plus"}, subPrice:"$20/mois|$20/mo", verified:true, verified_date:"2026-07-13", tags:[],   scores:{redaction:88, code:87, recherche:84, docs:86, crea:85}},
+    {id:"gem31pro",name:"Gemini 3.1 Pro",      provider:"Google",     in:2.00, out:12.00, ctx:"1M",   sub:{fr:"Google AI Pro",en:"Google AI Pro"}, subPrice:"$19.99/mois|$19.99/mo", verified:true, verified_date:"2026-07-13", tags:[], scores:{redaction:93, code:91, recherche:90, docs:95, crea:89}},
+    {id:"gem35fl", name:"Gemini 3.5 Flash",    provider:"Google",     in:1.50, out:9.00,  ctx:"1M",   sub:{fr:"Google AI Pro",en:"Google AI Pro"}, subPrice:"$19.99/mois|$19.99/mo", verified:true, verified_date:"2026-07-13", tags:[], scores:{redaction:86, code:84, recherche:85, docs:88, crea:82}},
+    {id:"grok45",  name:"Grok 4.5",            provider:"xAI",        in:2.00, out:6.00,  ctx:"500K", sub:{fr:"SuperGrok",en:"SuperGrok"}, subPrice:"~$30/mois|~$30/mo", verified:false, verified_date:null, tags:[],      scores:{redaction:84, code:86, recherche:92, docs:83, crea:87}},
+    {id:"dsv4pro", name:"DeepSeek V4 Pro",     provider:"DeepSeek",   in:0.44, out:0.87,  ctx:"1M",   sub:{fr:"chat.deepseek.com",en:"chat.deepseek.com"}, subPrice:"0|0", verified:true, verified_date:"2026-07-13", tags:["open"],  scores:{redaction:87, code:90, recherche:75, docs:85, crea:80}},
+    {id:"glm52",   name:"GLM-5.2",             provider:"Zhipu · Z.ai",in:0.93, out:3.00, ctx:"1M",   sub:{fr:"chat.z.ai",en:"chat.z.ai"}, subPrice:"0|0", verified:false, verified_date:null, tags:["open"],                 scores:{redaction:83, code:88, recherche:72, docs:84, crea:78}},
+    {id:"qwen3max",name:"Qwen3 Max Thinking",  provider:"Alibaba",    in:0.78, out:3.90,  ctx:"262K", sub:{fr:"chat.qwen.ai",en:"chat.qwen.ai"}, subPrice:"0|0", verified:true, verified_date:"2026-07-13", tags:[],                 scores:{redaction:82, code:85, recherche:70, docs:81, crea:77}},
+    {id:"kimik26", name:"Kimi K2.6",           provider:"Moonshot",   in:0.66, out:3.41,  ctx:"262K", sub:{fr:"kimi.com",en:"kimi.com"}, subPrice:"0|0", verified:true, verified_date:"2026-07-13", tags:["open"],                   scores:{redaction:80, code:83, recherche:74, docs:86, crea:79}},
+    {id:"mistralL",name:"Mistral Large 2512",  provider:"Mistral AI", in:0.50, out:1.50,  ctx:"262K", sub:{fr:"Le Chat Pro",en:"Le Chat Pro"}, subPrice:"~15€/mois|~€15/mo", verified:false, verified_date:null, tags:["eu"], scores:{redaction:81, code:79, recherche:76, docs:80, crea:78}},
+    {id:"llama4m", name:"Llama 4 Maverick",    provider:"Meta",       in:0.20, out:0.80,  ctx:"1M",   sub:{fr:"meta.ai",en:"meta.ai"}, subPrice:"0|0", verified:true, verified_date:"2026-07-13", tags:["open"],     scores:{redaction:76, code:74, recherche:68, docs:75, crea:73}},
+    {id:"sonarpro",name:"Sonar Pro Search",    provider:"Perplexity", in:3.00, out:15.00, ctx:"200K", sub:{fr:"Perplexity Pro",en:"Perplexity Pro"}, subPrice:"$20/mois|$20/mo", verified:true, verified_date:"2026-07-13", tags:[], scores:{redaction:74, code:65, recherche:97, docs:78, crea:70}},
+    {id:"apertus70",name:"Apertus 70B",        provider:"EPFL / ETH Zurich", in:0, out:0, ctx:"65K", sub:{fr:"chat.publicai.co",en:"chat.publicai.co"}, subPrice:"0|0", verified:true, verified_date:"2026-07-13", tags:["swiss","open"], scores:{redaction:68, code:55, recherche:40, docs:62, crea:60}},
+    {id:"apertus8", name:"Apertus 8B",         provider:"EPFL / ETH Zurich", in:0, out:0, ctx:"65K", sub:{fr:"open source (self-host)",en:"open source (self-host)"}, subPrice:"0|0", verified:true, verified_date:"2026-07-13", tags:["swiss","open"], scores:{redaction:55, code:42, recherche:30, docs:48, crea:50}}
+  ]
+};
+
+const COLLECTIONS = [
+  {id:"all",   fr:"Tous les modèles", en:"All models"},
+  {id:"swiss", fr:"🇨🇭 IA Suisse",     en:"🇨🇭 Swiss AI"},
+  {id:"free",  fr:"🆓 IA gratuites",   en:"🆓 Free AI"}
+];
+
+// Infos détaillées par modèle (dates de sortie réelles : OpenRouter 2026-07-13 · taille réseau : uniquement si publiée par l'éditeur)
+const INFO = {
+  opus48:   {flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"05.2026", params:{fr:"non communiqué (labo fermé)",en:"not disclosed (closed lab)"}, plus:{fr:"Le plus régulier sur les tâches longues et le code",en:"Most consistent on long tasks and code"}, minus:{fr:"API chère à gros volume",en:"Expensive API at scale"}},
+  sonnet5:  {flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"06.2026", params:{fr:"non communiqué (labo fermé)",en:"not disclosed (closed lab)"}, plus:{fr:"Proche d'Opus pour 2,5× moins cher",en:"Near-Opus quality at 2.5× lower price"}, minus:{fr:"Moins bon sur les cas très complexes",en:"Weaker on very complex cases"}},
+  gpt56sol: {flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"07.2026", params:{fr:"non communiqué (labo fermé)",en:"not disclosed (closed lab)"}, plus:{fr:"Ultra-polyvalent, écosystème géant (apps, mémoire)",en:"Very versatile, huge ecosystem (apps, memory)"}, minus:{fr:"Réponses parfois verbeuses",en:"Sometimes verbose"}},
+  gpt56luna:{flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"07.2026", params:{fr:"non communiqué (labo fermé)",en:"not disclosed (closed lab)"}, plus:{fr:"Rapide et économique pour le quotidien",en:"Fast and cheap for daily use"}, minus:{fr:"Raisonnement moins profond",en:"Shallower reasoning"}},
+  gem31pro: {flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"02.2026", params:{fr:"non communiqué (labo fermé)",en:"not disclosed (closed lab)"}, plus:{fr:"Intégré à Gmail, Docs et Workspace",en:"Integrated with Gmail, Docs & Workspace"}, minus:{fr:"Confidentialité à paramétrer (écosystème Google)",en:"Privacy needs configuring (Google ecosystem)"}},
+  gem35fl:  {flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"05.2026", params:{fr:"non communiqué (labo fermé)",en:"not disclosed (closed lab)"}, plus:{fr:"Très rapide, bon en multimédia",en:"Very fast, good multimedia"}, minus:{fr:"Qualité en dessous des versions Pro",en:"Below Pro-tier quality"}},
+  grok45:   {flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"07.2026", params:{fr:"non communiqué (labo fermé)",en:"not disclosed (closed lab)"}, plus:{fr:"Branché en direct sur X : fort sur l'actu chaude",en:"Live X access: strong on breaking news"}, minus:{fr:"Ton et filtres imprévisibles",en:"Unpredictable tone & filtering"}},
+  dsv4pro:  {flag:"🇨🇳", country:{fr:"Chine",en:"China"}, released:"04.2026", params:{fr:"non publié pour V4 (V3 : 671 Mds MoE)",en:"not published for V4 (V3: 671B MoE)"}, plus:{fr:"Le roi du rapport qualité/prix",en:"The value-for-money king"}, minus:{fr:"Version en ligne hébergée en Chine (données)",en:"Online version hosted in China (data)"}},
+  glm52:    {flag:"🇨🇳", country:{fr:"Chine",en:"China"}, released:"06.2026", params:{fr:"open source · taille non vérifiée",en:"open source · size unverified"}, plus:{fr:"Excellent en code pour son prix",en:"Great at code for the price"}, minus:{fr:"Hébergement en ligne en Chine",en:"Online hosting in China"}},
+  qwen3max: {flag:"🇨🇳", country:{fr:"Chine",en:"China"}, released:"02.2026", params:{fr:"non communiqué (poids fermés)",en:"not disclosed (closed weights)"}, plus:{fr:"Chat gratuit généreux, bon multilingue",en:"Generous free chat, good multilingual"}, minus:{fr:"Pas open source, contrairement aux petits Qwen",en:"Not open source, unlike smaller Qwens"}},
+  kimik26:  {flag:"🇨🇳", country:{fr:"Chine",en:"China"}, released:"04.2026", params:{fr:"~1 000 Mds MoE (base K2, 32 actifs)",en:"~1,000B MoE (K2 base, 32B active)"}, plus:{fr:"Très fort sur les longs documents",en:"Very strong on long documents"}, minus:{fr:"Hébergement en ligne en Chine",en:"Online hosting in China"}},
+  mistralL: {flag:"🇫🇷", country:{fr:"France",en:"France"}, released:"12.2025", params:{fr:"non communiqué",en:"not disclosed"}, plus:{fr:"Européen (RGPD), données hébergées en UE",en:"European (GDPR), EU-hosted data"}, minus:{fr:"Un cran derrière les leaders US/CN",en:"A notch behind US/CN leaders"}},
+  llama4m:  {flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"04.2025", params:{fr:"400 Mds MoE (17 actifs)",en:"400B MoE (17B active)"}, plus:{fr:"Open source, gratuit via meta.ai",en:"Open source, free via meta.ai"}, minus:{fr:"Vieillissant face aux modèles 2026",en:"Aging vs 2026 models"}},
+  sonarpro: {flag:"🇺🇸", country:{fr:"États-Unis",en:"United States"}, released:"10.2025", params:{fr:"non communiqué",en:"not disclosed"}, plus:{fr:"Cite ses sources web en direct",en:"Cites live web sources"}, minus:{fr:"Cher pour des recherches simples",en:"Pricey for simple lookups"}},
+  apertus70:{flag:"🇨🇭", country:{fr:"Suisse",en:"Switzerland"}, released:"09.2025", params:{fr:"70 Mds (dense)",en:"70B (dense)"}, plus:{fr:"Souverain, transparent, gratuit — 40% de données non anglophones",en:"Sovereign, transparent, free — 40% non-English training data"}, minus:{fr:"Loin des flagships en qualité brute",en:"Far from flagships in raw quality"}},
+  apertus8: {flag:"🇨🇭", country:{fr:"Suisse",en:"Switzerland"}, released:"09.2025", params:{fr:"8 Mds (dense)",en:"8B (dense)"}, plus:{fr:"Tourne en local sur un bon portable",en:"Runs locally on a good laptop"}, minus:{fr:"Capacités limitées",en:"Limited capabilities"}}
+};
+
+const USAGES = [
+  {id:"redaction", fr:"✍️ Rédaction & compréhension", en:"✍️ Writing & comprehension"},
+  {id:"code",      fr:"💻 Code & dev",                en:"💻 Code & dev"},
+  {id:"recherche", fr:"🔎 Recherche web & actu",      en:"🔎 Web search & news"},
+  {id:"docs",      fr:"📄 Analyse de documents",      en:"📄 Document analysis"},
+  {id:"crea",      fr:"💡 Créativité & brainstorming",en:"💡 Creativity & brainstorming"}
+];
+
+const I18N = {
+  fr: {
+    tagline:"Quelle IA utiliser, pour quoi, à quel prix — en 30 secondes.",
+    updated:(d)=>`Données mises à jour le ${d} · actualisation quotidienne automatique`,
+    demo:"🧪 SCORES DE DÉMONSTRATION — Les prix API sont réels (OpenRouter). Les scores par usage sont des données de démonstration : la dernière génération n'a pas pu interroger Artificial Analysis.",
+    sortby:"Trier :", sortScore:"Score", sortPrice:"Prix API",
+    score:"Score", sub:"Abonnement", api:"Prix API", ctx:"contexte",
+    perM:"in = envoyé / out = généré<br>par million de tokens*",
+    free:"Gratuit en ligne",
+    verifOk:(d)=>`✓ vérifié le ${d}`, verifTodo:"⚠ à vérifier",
+    top:"🏆 Top qualité", value:"💎 Meilleur rapport qualité/prix", budget:"🪙 Petit budget", eu:"🇪🇺 Europe", open:"📦 Open source", swiss:"🇨🇭 Suisse",
+    freeOpen:"Gratuit", selfHost:"open source · installable sur sa propre machine",
+    freeBanner:"💡 <b>Tous ces modèles s'utilisent gratuitement en ligne</b> (site web ou app mobile), sans rien installer — l'adresse est indiquée sur chaque carte. Le badge 📦 Open source signifie qu'on peut <b>en plus</b> télécharger le modèle sur sa propre machine : réservé aux utilisateurs avancés avec un ordinateur puissant (exception : Apertus 8B tourne sur un bon portable).",
+    tokTitle:"💡 C'est quoi un token ? (et comment lire les prix API)",
+    tok1:"Un token ≈ un morceau de mot — en français, 1 mot ≈ 1,3 token. Dans les prix API : <b>in</b> = ce que vous envoyez à l'IA (question + documents), <b>out</b> = ce qu'elle écrit en réponse. Le out coûte toujours plus cher.",
+    tok2:"Repères concrets : un e-mail moyen (≈ 20 lignes, 150 mots) ≈ <b>200 tokens</b> · une page web simple ou un article de blog ≈ <b>1 000 tokens</b> · un roman entier ≈ <b>120 000 tokens</b>. Le « million de tokens » affiché ici ≈ <b>4 000 e-mails</b>.",
+    tok3:"Exemple réel : faire résumer un e-mail de 20 lignes par Claude Sonnet 5 (2 $ in / 10 $ out) et recevoir 10 lignes de réponse coûte ≈ <b>0,002 $</b> — un cinquième de centime. À petit volume, l'API ne coûte presque rien ; l'abonnement se justifie pour un usage quotidien dans une interface clé en main.",
+    detPays:"Pays", detSortie:"Sortie", detTaille:"Réseau de neurones", detPlus:"✅ Point fort", detLimite:"⚠️ Limite",
+    detNote:"Mds = milliards de paramètres, la « taille du cerveau » du modèle. Les labos fermés (OpenAI, Anthropic, Google…) ne publient plus ce chiffre — seuls les modèles open source l'affichent.",
+    noScore:"données indisponibles",
+    count:(n)=>`${n} modèles comparés`,
+    methodoTitle:"📖 Méthodologie (transparente et open source)",
+    methodo1:"Chaque modèle reçoit un score sur 100 par usage, calculé comme moyenne pondérée de benchmarks publics : Artificial Analysis (MMLU-Pro, coding, agentic…), classements Elo LMArena (préférence humaine) et une part éditoriale assumée. Les pondérations sont publiées dans le fichier weights.json du repo GitHub — critiquables et améliorables par tous.",
+    methodo2:"Les prix API viennent de l'API publique OpenRouter (actualisés chaque jour à 06h00). Les prix d'abonnements n'ont pas d'API : ils sont vérifiés chaque semaine, d'où le badge « vérifié le … ».",
+    methodo3:"Ce dashboard traduit les benchmarks techniques en langage courant. Il ne remplace pas un test sur VOTRE cas d'usage : les scores mesurent des moyennes, pas votre besoin précis.",
+    footer1:"Sources :", footer2:"Un outil gratuit proposé par"
+  },
+  en: {
+    tagline:"Which AI to use, for what, at what price — in 30 seconds.",
+    updated:(d)=>`Data updated ${d} · automatic daily refresh`,
+    demo:"🧪 DEMO SCORES — API prices are real (OpenRouter). Usage scores are demo data: the last build could not reach Artificial Analysis.",
+    sortby:"Sort:", sortScore:"Score", sortPrice:"API price",
+    score:"Score", sub:"Subscription", api:"API price", ctx:"context",
+    perM:"in = sent / out = generated<br>per million tokens*",
+    free:"Free online",
+    verifOk:(d)=>`✓ verified ${d}`, verifTodo:"⚠ to verify",
+    top:"🏆 Top quality", value:"💎 Best value", budget:"🪙 Budget pick", eu:"🇪🇺 Europe", open:"📦 Open source", swiss:"🇨🇭 Swiss",
+    freeOpen:"Free", selfHost:"open source · install on your own machine",
+    freeBanner:"💡 <b>All these models are free to use online</b> (website or mobile app), nothing to install — the address is shown on each card. The 📦 Open source badge means you can <b>additionally</b> download the model to your own machine: for advanced users with powerful hardware (exception: Apertus 8B runs on a good laptop).",
+    tokTitle:"💡 What's a token? (and how to read API prices)",
+    tok1:"A token ≈ a piece of a word — roughly 1 word ≈ 1.3 tokens. In API prices: <b>in</b> = what you send to the AI (question + documents), <b>out</b> = what it writes back. Out always costs more.",
+    tok2:"Concrete references: an average email (≈ 20 lines, 150 words) ≈ <b>200 tokens</b> · a simple web page or blog post ≈ <b>1,000 tokens</b> · an entire novel ≈ <b>120,000 tokens</b>. The “million tokens” shown here ≈ <b>4,000 emails</b>.",
+    tok3:"Real example: having Claude Sonnet 5 ($2 in / $10 out) summarize a 20-line email and getting a 10-line reply costs ≈ <b>$0.002</b> — a fifth of a cent. At low volume the API costs next to nothing; a subscription pays off for daily use in a ready-made interface.",
+    detPays:"Country", detSortie:"Released", detTaille:"Neural network", detPlus:"✅ Strength", detLimite:"⚠️ Limitation",
+    detNote:"B = billions of parameters, the model's “brain size”. Closed labs (OpenAI, Anthropic, Google…) no longer publish this figure — only open-source models do.",
+    noScore:"data unavailable",
+    count:(n)=>`${n} models compared`,
+    methodoTitle:"📖 Methodology (transparent & open source)",
+    methodo1:"Each model gets a score out of 100 per use case, computed as a weighted average of public benchmarks: Artificial Analysis (MMLU-Pro, coding, agentic…), LMArena Elo rankings (human preference) and a documented editorial share. Weights are published in weights.json on GitHub — open to criticism and improvement.",
+    methodo2:"API prices come from the public OpenRouter API (refreshed daily at 06:00). Subscription prices have no API: they are verified weekly, hence the “verified on…” badge.",
+    methodo3:"This dashboard translates technical benchmarks into plain language. It doesn't replace testing on YOUR use case: scores measure averages, not your exact need.",
+    footer1:"Sources:", footer2:"A free tool by"
+  }
+};
+
+// ============ ÉTAT ============
+let lang = "fr", usage = "redaction", sortMode = "score", collection = "all";
+const expanded = {};
+
+// état partageable via l'URL (#l=fr&c=free&u=code&s=score)
+(function(){
+  try{
+    const p = new URLSearchParams(location.hash.slice(1));
+    if(["fr","en"].includes(p.get("l"))) lang = p.get("l");
+    if(["all","swiss","free"].includes(p.get("c"))) collection = p.get("c");
+    if(USAGES.some(u=>u.id===p.get("u"))) usage = p.get("u");
+    if(["score","price"].includes(p.get("s"))) sortMode = p.get("s");
+  }catch(e){}
+})();
+function syncHash(){
+  try{ history.replaceState(null,"",`#l=${lang}&c=${collection}&u=${usage}&s=${sortMode}`); }catch(e){}
+}
+const inCollection = m => collection==="all" ? true : collection==="swiss" ? m.tags.includes("swiss") : m.subPrice==="0|0";
+
+// ============ HELPERS ============
+const blended = m => m.in * 0.25 + m.out * 0.75; // proxy prix "usage réel" (75% output)
+const t = k => I18N[lang][k];
+const score = m => (m.scores && typeof m.scores[usage]==="number") ? m.scores[usage] : null; // null = données AA introuvables pour ce modèle
+const fmtDate = iso => { // "2026-07-13" → "13.07.2026" (fr) / "2026-07-13" (en)
+  if(!iso) return "?";
+  const [y,mo,d] = iso.split("-");
+  return lang==="fr" ? `${d}.${mo}.${y}` : iso;
+};
+
+function computeBadges(list){
+  const badges = {};
+  const add = (m,b)=>{ if(!m) return; badges[m.id]=badges[m.id]||[]; badges[m.id].push(b); };
+  const scored = list.filter(m=>score(m)!==null);
+  add([...scored].sort((a,b)=>score(b)-score(a))[0], "top");
+  // rapport qualité/prix : score^3 / prix API (sinon le moins cher gagne toujours), seuil qualité >= 75, gratuits exclus (imbattables)
+  let pool = scored.filter(m=>score(m)>=75 && blended(m)>0);
+  if(!pool.length) pool = scored.filter(m=>blended(m)>0);
+  add([...pool].sort((a,b)=> (Math.pow(score(b),3)/blended(b)) - (Math.pow(score(a),3)/blended(a)))[0], "value");
+  // petit budget : le moins cher (gratuit accepté) avec score >= 60
+  add([...scored].filter(m=>score(m)>=60).sort((a,b)=>blended(a)-blended(b))[0], "budget");
+  return badges;
+}
+
+// ============ RENDER ============
+function render(){
+  // i18n statique (innerHTML : textes internes maîtrisés, avec <b>)
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const v = t(el.dataset.i18n);
+    if(typeof v === "string") el.innerHTML = v;
+  });
+  // date de mise à jour (depuis latest.json) + bandeau démo seulement si scores_demo:true
+  document.getElementById("updated-txt").innerHTML = t("updated")(fmtDate(DATA.updated));
+  const banner = document.getElementById("demo-banner");
+  banner.innerHTML = t("demo");
+  banner.style.display = DATA.scores_demo ? "block" : "none";
+  // bannière pédagogique de la vue Gratuites
+  document.getElementById("freebanner").innerHTML = collection==="free" ? `<div class="info-banner">${t("freeBanner")}</div>` : "";
+  document.documentElement.lang = lang;
+  document.getElementById("btn-fr").classList.toggle("active", lang==="fr");
+  document.getElementById("btn-en").classList.toggle("active", lang==="en");
+  document.getElementById("sort-score").classList.toggle("active", sortMode==="score");
+  document.getElementById("sort-price").classList.toggle("active", sortMode==="price");
+
+  // chips collections + usages
+  document.getElementById("collections").innerHTML = COLLECTIONS.map(c=>
+    `<button class="chip coll ${c.id===collection?'active':''}" onclick="setCollection('${c.id}')">${c[lang]}</button>`).join("");
+  document.getElementById("usages").innerHTML = USAGES.map(u=>
+    `<button class="chip ${u.id===usage?'active':''}" onclick="setUsage('${u.id}')">${u[lang]}</button>`).join("");
+
+  // filtre + tri (scores null → en fin de liste)
+  let list = DATA.models.filter(inCollection);
+  if(sortMode==="score") list.sort((a,b)=>(score(b)??-1)-(score(a)??-1));
+  else list.sort((a,b)=>blended(a)-blended(b));
+
+  const badges = computeBadges(list);
+  document.getElementById("count").textContent = t("count")(list.length);
+  syncHash();
+
+  // réponse express : les gagnants de la vue courante
+  const findB = tag => list.find(m=>(badges[m.id]||[]).includes(tag));
+  const picks = [["top",findB("top")],["value",findB("value")],["budget",findB("budget")]].filter(p=>p[1]);
+  document.getElementById("reco").innerHTML = picks.map(([tag,m])=>{
+    const sp = m.subPrice.split("|")[lang==="fr"?0:1];
+    return `<div class="pick ${tag==='top'?'gold':''}"><div class="k">${t(tag)}</div><div class="v">${m.name}</div><div class="p">${sp==="0" ? t("free")+" · "+m.sub[lang] : m.sub[lang]+" · "+sp}</div></div>`;
+  }).join("");
+
+  document.getElementById("grid").innerHTML = list.map((m,i)=>{
+    const sc = score(m);
+    const bs = (badges[m.id]||[]).map(b=>`<span class="tag ${b==='top'?'gold':b}">${t(b)}</span>`).join("");
+    const ts = m.tags.map(x=>`<span class="tag ${x}">${t(x)}</span>`).join("");
+    const subPrice = m.subPrice.split("|")[lang==="fr"?0:1];
+    const isTop = (badges[m.id]||[]).includes("top") && sortMode==="score";
+    const info = INFO[m.id];
+    const det = info ? `
+      <div class="det">
+        <div><div class="k">${t("detPays")}</div><div class="v">${info.flag} ${info.country[lang]}</div></div>
+        <div><div class="k">${t("detSortie")}</div><div class="v">${info.released}</div></div>
+        <div><div class="k">${t("detTaille")}</div><div class="v">${info.params[lang]}</div></div>
+        <div class="wide"><div class="k">${t("detPlus")}</div><div class="v">${info.plus[lang]}</div></div>
+        <div class="wide"><div class="k">${t("detLimite")}</div><div class="v">${info.minus[lang]}</div></div>
+        <div class="note">${t("detNote")}</div>
+      </div>` : "";
+    return `
+    <div class="card ${isTop?'top1':''} ${expanded[m.id]?'exp':''}" role="button" tabindex="0" aria-expanded="${!!expanded[m.id]}" onclick="toggleExpand('${m.id}')" onkeydown="cardKey(event,'${m.id}')">
+      <div class="chev">▶</div>
+      <div class="rank">${i+1}</div>
+      <div class="model">
+        <div class="name">${m.name}</div>
+        <div class="provider">${m.provider} · ${m.ctx} ${t("ctx")}</div>
+        <div class="flags">${bs}${ts}</div>
+      </div>
+      <div class="scorebox">
+        <div class="lbl">${t("score")} — ${USAGES.find(u=>u.id===usage)[lang].replace(/^[^ ]+ /,"")}</div>
+        <div class="scorebar"><i style="width:${sc??0}%"></i></div>
+        <div class="scoreval">${sc===null ? `<small>${t("noScore")}</small>` : `${sc}<small>/100</small>`}</div>
+      </div>
+      <div class="sub">
+        <div class="lbl">${t("sub")}</div>
+        <div class="val">${subPrice==="0" ? t("free") : m.sub[lang]}</div>
+        <div class="detail">${subPrice==="0" ? m.sub[lang] : subPrice}</div>
+        <div class="verif ${m.verified?'ok':'todo'}">${m.verified?t("verifOk")(fmtDate(m.verified_date||DATA.updated)):t("verifTodo")}</div>
+      </div>
+      <div class="price">
+        <div class="lbl">${t("api")}</div>
+        <div class="val">${blended(m)===0 ? t("freeOpen") : `$${m.in.toFixed(2)} / $${m.out.toFixed(2)}`}</div>
+        <div class="detail">${blended(m)===0 ? t("selfHost") : t("perM")}</div>
+      </div>
+      ${det}
+    </div>`;
+  }).join("");
+}
+
+function setLang(l){ lang=l; render(); }
+function setUsage(u){ usage=u; render(); }
+function setSort(s){ sortMode=s; render(); }
+function setCollection(c){ collection=c; render(); }
+function toggleExpand(id){ expanded[id]=!expanded[id]; render(); }
+function cardKey(e,id){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleExpand(id); } }
+
+render();
+
+// ============ DONNÉES LIVE ============
+// Charge data/latest.json (généré par le pipeline). En file:// ou si absent → le fallback inline reste affiché.
+fetch("../data/latest.json")
+  .then(r => { if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+  .then(d => { if(d && Array.isArray(d.models) && d.models.length){ DATA = d; render(); } })
+  .catch(() => { /* fallback inline conservé */ });
+</script>
+</body>
+</html>

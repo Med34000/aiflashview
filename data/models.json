@@ -1,0 +1,261 @@
+{
+  "_readme": "Curated list of tracked models. openrouter_id → live API pricing/context; aa_slug → Artificial Analysis benchmarks (EXACT match, never fuzzy). editorial.* are IAtelier editorial fields (0-100), documented in the methodology. fallback.* is used when a live source is down (prices) or when AA_API_KEY is absent (scores → scores_demo:true).",
+  "models": [
+    {
+      "id": "opus48",
+      "name": "Claude Opus 4.8",
+      "provider": "Anthropic",
+      "openrouter_id": "anthropic/claude-opus-4.8",
+      "aa_slug": "claude-opus-4-8",
+      "tags": [],
+      "subscription": "Claude Pro",
+      "editorial": { "web_access": 75, "editorial_crea": 93 },
+      "fallback": {
+        "price_in": 5.0,
+        "price_out": 25.0,
+        "context": 1000000,
+        "scores": { "redaction": 95, "code": 97, "recherche": 82, "docs": 96, "crea": 93 }
+      }
+    },
+    {
+      "id": "sonnet5",
+      "name": "Claude Sonnet 5",
+      "provider": "Anthropic",
+      "openrouter_id": "anthropic/claude-sonnet-5",
+      "aa_slug": "claude-sonnet-5",
+      "tags": [],
+      "subscription": "Claude Pro",
+      "editorial": { "web_access": 75, "editorial_crea": 88 },
+      "fallback": {
+        "price_in": 2.0,
+        "price_out": 10.0,
+        "context": 1000000,
+        "scores": { "redaction": 90, "code": 92, "recherche": 78, "docs": 91, "crea": 88 }
+      }
+    },
+    {
+      "id": "gpt56sol",
+      "name": "GPT-5.6 Sol",
+      "provider": "OpenAI",
+      "openrouter_id": "openai/gpt-5.6-sol",
+      "aa_slug": "gpt-5-6-sol",
+      "tags": [],
+      "subscription": "ChatGPT Plus",
+      "editorial": { "web_access": 85, "editorial_crea": 92 },
+      "fallback": {
+        "price_in": 5.0,
+        "price_out": 30.0,
+        "context": 1000000,
+        "scores": { "redaction": 94, "code": 95, "recherche": 88, "docs": 93, "crea": 92 }
+      }
+    },
+    {
+      "id": "gpt56luna",
+      "name": "GPT-5.6 Luna",
+      "provider": "OpenAI",
+      "openrouter_id": "openai/gpt-5.6-luna",
+      "aa_slug": "gpt-5-6-luna",
+      "tags": [],
+      "subscription": "ChatGPT Plus",
+      "editorial": { "web_access": 80, "editorial_crea": 85 },
+      "fallback": {
+        "price_in": 1.0,
+        "price_out": 6.0,
+        "context": 1000000,
+        "scores": { "redaction": 88, "code": 87, "recherche": 84, "docs": 86, "crea": 85 }
+      }
+    },
+    {
+      "id": "gem31pro",
+      "name": "Gemini 3.1 Pro",
+      "provider": "Google",
+      "openrouter_id": "google/gemini-3.1-pro-preview",
+      "aa_slug": "gemini-3-1-pro-preview",
+      "tags": [],
+      "subscription": "Google AI Pro",
+      "editorial": { "web_access": 85, "editorial_crea": 89 },
+      "fallback": {
+        "price_in": 2.0,
+        "price_out": 12.0,
+        "context": 1000000,
+        "scores": { "redaction": 93, "code": 91, "recherche": 90, "docs": 95, "crea": 89 }
+      }
+    },
+    {
+      "id": "gem35fl",
+      "name": "Gemini 3.5 Flash",
+      "provider": "Google",
+      "openrouter_id": "google/gemini-3.5-flash",
+      "aa_slug": "gemini-3-5-flash",
+      "tags": [],
+      "subscription": "Google AI Pro",
+      "editorial": { "web_access": 80, "editorial_crea": 82 },
+      "fallback": {
+        "price_in": 1.5,
+        "price_out": 9.0,
+        "context": 1000000,
+        "scores": { "redaction": 86, "code": 84, "recherche": 85, "docs": 88, "crea": 82 }
+      }
+    },
+    {
+      "id": "grok45",
+      "name": "Grok 4.5",
+      "provider": "xAI",
+      "openrouter_id": "x-ai/grok-4.5",
+      "aa_slug": "grok-4-5",
+      "tags": [],
+      "subscription": "SuperGrok",
+      "editorial": { "web_access": 95, "editorial_crea": 87 },
+      "fallback": {
+        "price_in": 2.0,
+        "price_out": 6.0,
+        "context": 500000,
+        "scores": { "redaction": 84, "code": 86, "recherche": 92, "docs": 83, "crea": 87 }
+      }
+    },
+    {
+      "id": "dsv4pro",
+      "name": "DeepSeek V4 Pro",
+      "provider": "DeepSeek",
+      "openrouter_id": "deepseek/deepseek-v4-pro",
+      "aa_slug": "deepseek-v4-pro",
+      "tags": ["open"],
+      "subscription": "chat.deepseek.com",
+      "editorial": { "web_access": 60, "editorial_crea": 80 },
+      "fallback": {
+        "price_in": 0.44,
+        "price_out": 0.87,
+        "context": 1000000,
+        "scores": { "redaction": 87, "code": 90, "recherche": 75, "docs": 85, "crea": 80 }
+      }
+    },
+    {
+      "id": "glm52",
+      "name": "GLM-5.2",
+      "provider": "Zhipu · Z.ai",
+      "openrouter_id": "z-ai/glm-5.2",
+      "aa_slug": "glm-5-2",
+      "tags": ["open"],
+      "subscription": "chat.z.ai",
+      "editorial": { "web_access": 55, "editorial_crea": 78 },
+      "fallback": {
+        "price_in": 0.93,
+        "price_out": 3.0,
+        "context": 1000000,
+        "scores": { "redaction": 83, "code": 88, "recherche": 72, "docs": 84, "crea": 78 }
+      }
+    },
+    {
+      "id": "qwen3max",
+      "name": "Qwen3 Max Thinking",
+      "provider": "Alibaba",
+      "openrouter_id": "qwen/qwen3-max-thinking",
+      "aa_slug": "qwen3-max-thinking",
+      "tags": [],
+      "subscription": "chat.qwen.ai",
+      "editorial": { "web_access": 60, "editorial_crea": 77 },
+      "fallback": {
+        "price_in": 0.78,
+        "price_out": 3.9,
+        "context": 262144,
+        "scores": { "redaction": 82, "code": 85, "recherche": 70, "docs": 81, "crea": 77 }
+      }
+    },
+    {
+      "id": "kimik26",
+      "name": "Kimi K2.6",
+      "provider": "Moonshot",
+      "openrouter_id": "moonshotai/kimi-k2.6",
+      "aa_slug": "kimi-k2-6",
+      "tags": ["open"],
+      "subscription": "kimi.com",
+      "editorial": { "web_access": 60, "editorial_crea": 79 },
+      "fallback": {
+        "price_in": 0.66,
+        "price_out": 3.41,
+        "context": 262144,
+        "scores": { "redaction": 80, "code": 83, "recherche": 74, "docs": 86, "crea": 79 }
+      }
+    },
+    {
+      "id": "mistralL",
+      "name": "Mistral Large 2512",
+      "provider": "Mistral AI",
+      "openrouter_id": "mistralai/mistral-large-2512",
+      "aa_slug": "mistral-large-3",
+      "tags": ["eu"],
+      "subscription": "Le Chat Pro",
+      "editorial": { "web_access": 60, "editorial_crea": 78 },
+      "fallback": {
+        "price_in": 0.5,
+        "price_out": 1.5,
+        "context": 262144,
+        "scores": { "redaction": 81, "code": 79, "recherche": 76, "docs": 80, "crea": 78 }
+      }
+    },
+    {
+      "id": "llama4m",
+      "name": "Llama 4 Maverick",
+      "provider": "Meta",
+      "openrouter_id": "meta-llama/llama-4-maverick",
+      "aa_slug": "llama-4-maverick",
+      "tags": ["open"],
+      "subscription": "meta.ai",
+      "editorial": { "web_access": 40, "editorial_crea": 73 },
+      "fallback": {
+        "price_in": 0.2,
+        "price_out": 0.8,
+        "context": 1000000,
+        "scores": { "redaction": 76, "code": 74, "recherche": 68, "docs": 75, "crea": 73 }
+      }
+    },
+    {
+      "id": "sonarpro",
+      "name": "Sonar Pro Search",
+      "provider": "Perplexity",
+      "openrouter_id": "perplexity/sonar-pro-search",
+      "aa_slug": "sonar-pro",
+      "tags": [],
+      "subscription": "Perplexity Pro",
+      "editorial": { "web_access": 100, "editorial_crea": 70 },
+      "fallback": {
+        "price_in": 3.0,
+        "price_out": 15.0,
+        "context": 200000,
+        "scores": { "redaction": 74, "code": 65, "recherche": 97, "docs": 78, "crea": 70 }
+      }
+    },
+    {
+      "id": "apertus70",
+      "name": "Apertus 70B",
+      "provider": "EPFL / ETH Zurich",
+      "openrouter_id": null,
+      "aa_slug": "apertus-70b-instruct",
+      "tags": ["swiss", "open"],
+      "subscription": "chat.publicai.co",
+      "editorial": { "web_access": 0, "editorial_crea": 60 },
+      "fallback": {
+        "price_in": 0,
+        "price_out": 0,
+        "context": 65536,
+        "scores": { "redaction": 68, "code": 55, "recherche": 40, "docs": 62, "crea": 60 }
+      }
+    },
+    {
+      "id": "apertus8",
+      "name": "Apertus 8B",
+      "provider": "EPFL / ETH Zurich",
+      "openrouter_id": null,
+      "aa_slug": "apertus-8b-instruct",
+      "tags": ["swiss", "open"],
+      "subscription": "open source (self-host)",
+      "editorial": { "web_access": 0, "editorial_crea": 50 },
+      "fallback": {
+        "price_in": 0,
+        "price_out": 0,
+        "context": 65536,
+        "scores": { "redaction": 55, "code": 42, "recherche": 30, "docs": 48, "crea": 50 }
+      }
+    }
+  ]
+}
