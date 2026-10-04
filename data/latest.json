@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-03T09:45:14.431Z",
-  "updated": "2026-10-03",
+  "updated_at": "2026-10-04T10:28:58.535Z",
+  "updated": "2026-10-04",
   "scores_demo": false,
   "sources": {
     "prices": "openrouter",
@@ -241,8 +241,8 @@
       "id": "glm52",
       "name": "GLM-5.2",
       "provider": "Zhipu · Z.ai",
-      "in": 0.41,
-      "out": 3.99,
+      "in": 0.38,
+      "out": 3.49,
       "ctx": "1M",
       "ctx_tokens": 1048576,
       "sub": {
