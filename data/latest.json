@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-04T10:28:58.535Z",
-  "updated": "2026-10-04",
+  "updated_at": "2026-10-05T11:18:13.141Z",
+  "updated": "2026-10-05",
   "scores_demo": false,
   "sources": {
     "prices": "openrouter",
@@ -21,7 +21,7 @@
     "recherche": {
       "top": "opus48",
       "value": "opus48",
-      "budget": "glm52"
+      "budget": "qwen3max"
     },
     "docs": {
       "top": "gpt56sol",
@@ -241,8 +241,8 @@
       "id": "glm52",
       "name": "GLM-5.2",
       "provider": "Zhipu · Z.ai",
-      "in": 0.38,
-      "out": 3.49,
+      "in": 0.02,
+      "out": 16,
       "ctx": "1M",
       "ctx_tokens": 1048576,
       "sub": {
