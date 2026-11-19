@@ -1,37 +1,37 @@
 {
-  "updated_at": "2026-10-05T11:18:13.141Z",
-  "updated": "2026-10-05",
-  "scores_demo": false,
+  "updated_at": "2026-11-19T17:42:01.641Z",
+  "updated": "2026-11-19",
+  "scores_demo": true,
   "sources": {
     "prices": "openrouter",
-    "benchmarks": "Artificial Analysis",
+    "benchmarks": "demo (models.json)",
     "attribution": "Benchmark data: Artificial Analysis (https://artificialanalysis.ai)"
   },
   "badges": {
     "redaction": {
-      "top": "gpt56sol",
-      "value": "llama4m",
-      "budget": "gpt56sol"
+      "top": "opus48",
+      "value": "gpt56luna",
+      "budget": "apertus70"
     },
     "code": {
-      "top": "gpt56sol",
-      "value": "dsv4pro",
-      "budget": "dsv4pro"
+      "top": "opus48",
+      "value": "gpt56luna",
+      "budget": "llama4m"
     },
     "recherche": {
-      "top": "opus48",
-      "value": "opus48",
-      "budget": "qwen3max"
+      "top": "sonarpro",
+      "value": "gpt56luna",
+      "budget": "llama4m"
     },
     "docs": {
-      "top": "gpt56sol",
-      "value": "dsv4pro",
-      "budget": "dsv4pro"
+      "top": "opus48",
+      "value": "gpt56luna",
+      "budget": "apertus70"
     },
     "crea": {
-      "top": "gpt56sol",
-      "value": "dsv4pro",
-      "budget": "gpt56sol"
+      "top": "opus48",
+      "value": "gpt56luna",
+      "budget": "apertus70"
     }
   },
   "models": [
@@ -53,11 +53,11 @@
       "verified_date": "2026-07-13",
       "tags": [],
       "scores": {
-        "redaction": 52,
-        "code": 70,
-        "recherche": 75,
-        "docs": 80,
-        "crea": 62
+        "redaction": 95,
+        "code": 97,
+        "recherche": 82,
+        "docs": 96,
+        "crea": 93
       }
     },
     {
@@ -78,19 +78,19 @@
       "verified_date": "2026-07-13",
       "tags": [],
       "scores": {
-        "redaction": 38,
-        "code": 72,
-        "recherche": 53,
-        "docs": 83,
-        "crea": 58
+        "redaction": 90,
+        "code": 92,
+        "recherche": 78,
+        "docs": 91,
+        "crea": 88
       }
     },
     {
       "id": "gpt56sol",
       "name": "GPT-5.6 Sol",
       "provider": "OpenAI",
-      "in": 2,
-      "out": 10,
+      "in": 4,
+      "out": 20,
       "ctx": "1M",
       "ctx_tokens": 1050000,
       "sub": {
@@ -103,11 +103,11 @@
       "verified_date": "2026-07-13",
       "tags": [],
       "scores": {
-        "redaction": 60,
-        "code": 74,
-        "recherche": 74,
-        "docs": 85,
-        "crea": 65
+        "redaction": 94,
+        "code": 95,
+        "recherche": 88,
+        "docs": 93,
+        "crea": 92
       }
     },
     {
@@ -128,11 +128,11 @@
       "verified_date": "2026-07-13",
       "tags": [],
       "scores": {
-        "redaction": 37,
-        "code": 71,
-        "recherche": 54,
-        "docs": 85,
-        "crea": 56
+        "redaction": 88,
+        "code": 87,
+        "recherche": 84,
+        "docs": 86,
+        "crea": 85
       }
     },
     {
@@ -153,11 +153,11 @@
       "verified_date": "2026-07-13",
       "tags": [],
       "scores": {
-        "redaction": 53,
-        "code": 65,
-        "recherche": 74,
-        "docs": 83,
-        "crea": 53
+        "redaction": 93,
+        "code": 91,
+        "recherche": 90,
+        "docs": 95,
+        "crea": 89
       }
     },
     {
@@ -178,11 +178,11 @@
       "verified_date": "2026-07-13",
       "tags": [],
       "scores": {
-        "redaction": 54,
-        "code": 62,
-        "recherche": 73,
-        "docs": 77,
-        "crea": 52
+        "redaction": 86,
+        "code": 84,
+        "recherche": 85,
+        "docs": 88,
+        "crea": 82
       }
     },
     {
@@ -203,19 +203,19 @@
       "verified_date": null,
       "tags": [],
       "scores": {
-        "redaction": 39,
-        "code": 72,
-        "recherche": 61,
-        "docs": 77,
-        "crea": 58
+        "redaction": 84,
+        "code": 86,
+        "recherche": 92,
+        "docs": 83,
+        "crea": 87
       }
     },
     {
       "id": "dsv4pro",
       "name": "DeepSeek V4 Pro",
       "provider": "DeepSeek",
-      "in": 0.21,
-      "out": 0.42,
+      "in": 0.9,
+      "out": 1.5,
       "ctx": "1M",
       "ctx_tokens": 1048576,
       "sub": {
@@ -230,19 +230,19 @@
         "open"
       ],
       "scores": {
-        "redaction": 36,
-        "code": 69,
-        "recherche": 46,
-        "docs": 82,
-        "crea": 54
+        "redaction": 87,
+        "code": 90,
+        "recherche": 75,
+        "docs": 85,
+        "crea": 80
       }
     },
     {
       "id": "glm52",
       "name": "GLM-5.2",
       "provider": "Zhipu · Z.ai",
-      "in": 0.02,
-      "out": 16,
+      "in": 0.62,
+      "out": 2.42,
       "ctx": "1M",
       "ctx_tokens": 1048576,
       "sub": {
@@ -257,11 +257,11 @@
         "open"
       ],
       "scores": {
-        "redaction": 54,
-        "code": 64,
-        "recherche": 71,
-        "docs": 81,
-        "crea": 51
+        "redaction": 83,
+        "code": 88,
+        "recherche": 72,
+        "docs": 84,
+        "crea": 78
       }
     },
     {
@@ -282,19 +282,19 @@
       "verified_date": "2026-07-13",
       "tags": [],
       "scores": {
-        "redaction": 46,
-        "code": 24,
-        "recherche": 60,
-        "docs": 70,
-        "crea": 44
+        "redaction": 82,
+        "code": 85,
+        "recherche": 70,
+        "docs": 81,
+        "crea": 77
       }
     },
     {
       "id": "kimik26",
       "name": "Kimi K2.6",
       "provider": "Moonshot",
-      "in": 0.95,
-      "out": 4,
+      "in": 0.65,
+      "out": 3.41,
       "ctx": "262K",
       "ctx_tokens": 262144,
       "sub": {
@@ -309,11 +309,11 @@
         "open"
       ],
       "scores": {
-        "redaction": 51,
-        "code": 57,
-        "recherche": 68,
-        "docs": 74,
-        "crea": 48
+        "redaction": 80,
+        "code": 83,
+        "recherche": 74,
+        "docs": 86,
+        "crea": 79
       }
     },
     {
@@ -336,21 +336,21 @@
         "eu"
       ],
       "scores": {
-        "redaction": 46,
-        "code": 27,
-        "recherche": 27,
-        "docs": 54,
-        "crea": 37
+        "redaction": 81,
+        "code": 79,
+        "recherche": 76,
+        "docs": 80,
+        "crea": 78
       }
     },
     {
       "id": "llama4m",
       "name": "Llama 4 Maverick",
       "provider": "Meta",
-      "in": 0.19,
-      "out": 0.65,
-      "ctx": "1M",
-      "ctx_tokens": 1048576,
+      "in": 0.35,
+      "out": 1,
+      "ctx": "524K",
+      "ctx_tokens": 524288,
       "sub": {
         "fr": "meta.ai",
         "en": "meta.ai"
@@ -363,11 +363,11 @@
         "open"
       ],
       "scores": {
-        "redaction": 48,
-        "code": 21,
-        "recherche": 20,
-        "docs": 67,
-        "crea": 35
+        "redaction": 76,
+        "code": 74,
+        "recherche": 68,
+        "docs": 75,
+        "crea": 73
       }
     },
     {
@@ -388,11 +388,11 @@
       "verified_date": "2026-07-13",
       "tags": [],
       "scores": {
-        "redaction": 46,
-        "code": 28,
-        "recherche": 45,
-        "docs": 66,
-        "crea": 33
+        "redaction": 74,
+        "code": 65,
+        "recherche": 97,
+        "docs": 78,
+        "crea": 70
       }
     },
     {
@@ -416,11 +416,11 @@
         "open"
       ],
       "scores": {
-        "redaction": 15,
-        "code": 0,
-        "recherche": 8,
-        "docs": 8,
-        "crea": 27
+        "redaction": 68,
+        "code": 55,
+        "recherche": 40,
+        "docs": 62,
+        "crea": 60
       }
     },
     {
@@ -444,11 +444,11 @@
         "open"
       ],
       "scores": {
-        "redaction": 14,
-        "code": 0,
-        "recherche": 7,
-        "docs": 8,
-        "crea": 23
+        "redaction": 55,
+        "code": 42,
+        "recherche": 30,
+        "docs": 48,
+        "crea": 50
       }
     }
   ]
