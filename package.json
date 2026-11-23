@@ -1,0 +1,13 @@
+{
+  "name": "aiflashview",
+  "private": true,
+  "type": "module",
+  "description": "AI-FlashView : quelle IA choisir pour son métier, à quel prix. Sélection des modèles à partir des indices d’Artificial Analysis.",
+  "scripts": {
+    "apercu": "tsx scripts/apercu.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  },
+  "license": "MIT"
+}

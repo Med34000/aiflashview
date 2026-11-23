@@ -1,80 +1,53 @@
-# ⚡ AI-FlashView
+# AI-FlashView
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Daily data refresh](https://img.shields.io/badge/data-refreshed%20daily-22d3ee.svg)](.github/workflows/daily.yml)
+Quelle IA choisir pour son métier, et à quel prix ? AI-FlashView classe les modèles d’IA récents par usage (général, finance et comptabilité, juridique, gestion et stratégie, ingénierie, santé) selon les indices d’[Artificial Analysis](https://artificialanalysis.ai), avec leur prix d’API et leur vitesse. Il présente aussi l’IA suisse Apertus.
 
-**Which AI to use, for what, at what price — in 30 seconds.**
+**Le comparateur est en ligne sur [romande-ia.ch/outils/ai-flashview](https://romande-ia.ch/outils/ai-flashview).**
 
-AI-FlashView is an open-source dashboard for the general public and small businesses — the people who understand neither GPQA nor $/million tokens. It is not yet another benchmark aggregator: it is a **translator**. Technical benchmarks become simple scores per everyday use case (writing, code, web search, document analysis, creativity), alongside real API prices *and* subscription prices. Bilingual FR/EN, French first.
+Mis à jour le 2026-11-23 ≈16:05 (Europe/Zurich) — Claude (projet Romande-IA) — Anthropic, Claude Opus 5.5, pour Médéric Morin.
 
-A free tool by [romande-ia.ch](https://romande-ia.ch) (IAtelier).
+## Ce que contient ce dépôt
 
-## How it works
+- `src/flashview-build.ts` : la sélection des modèles, selon les règles ci-dessous. Fonction pure, sans réseau ni clé.
+- `src/flashview.ts` : les types, les usages (l’indice d’Artificial Analysis affiché pour chacun) et les formats d’affichage.
+- `src/flashview-swiss.ts` : la fiche vérifiée du modèle suisse Apertus, avec ses sources.
+- `scripts/apercu.ts` : un aperçu du classement dans le terminal, avec votre propre clé.
+- `site/index.html` : redirige l’ancienne adresse GitHub Pages vers le site.
 
-```
-pipeline/build.mjs  (Node 20+, native fetch, zero npm dependencies)
-        │
-        ├── OpenRouter public API ──→ API prices + context windows (LiteLLM JSON as fallback)
-        ├── Artificial Analysis API ─→ benchmark data (intelligence/coding indexes, MMLU-Pro, …)
-        ├── data/models.json ────────→ curated model list + editorial fields
-        ├── data/subscriptions.json ─→ subscription prices (maintained by hand, verified weekly)
-        └── data/weights.json ───────→ transparent weights per use case
-        ▼
-data/latest.json  +  data/history/YYYY-MM-DD.json
-        ▼
-site/index.html   (static, dependency-free — works from file:// with an inline fallback)
-```
+La page elle-même (Next.js) vit dans le dépôt du site romande-ia.ch, qui est privé.
 
-A GitHub Actions workflow ([daily.yml](.github/workflows/daily.yml)) rebuilds the data every day at ~06:00 Europe/Zurich and commits only when something changed.
+## D’où viennent les données
 
-## Scoring methodology
+De l’API gratuite d’Artificial Analysis. Le site l’interroge côté serveur, une à deux fois par jour, avec sa propre clé, et affiche la date de récupération. Les scores sont leurs indices, affichés tels quels, sans pondération maison.
 
-Each model gets a **score out of 100 per use case**, computed as a weighted average of public benchmark results. The weights live in [`data/weights.json`](data/weights.json) — versioned, transparent, and open to criticism and pull requests. That's the point.
+Ce dépôt ne publie aucune donnée. Les conditions de l’API gratuite demandent de citer Artificial Analysis, et une redistribution de leurs données passe par un accord avec eux. L’aperçu ci-dessous affiche les données dans votre terminal sans rien écrire sur disque.
 
-- Artificial Analysis indexes (~0–100) are used as-is; AA benchmarks (0–1) are scaled ×100.
-- No min-max normalization over the cohort: scores stay stable day after day and never produce artificial 0/100.
-- Context window is log-normalized between fixed anchors (16K → 0, 2M → 100).
-- A documented **editorial share** (web access, creativity) is part of the recipe — assumed, not hidden.
-- Missing data is never invented: a missing field renormalizes the remaining weights; an unknown model gets `null` and an explicit log line.
-- Honest scores, even when they hurt: the Swiss Apertus models score very low on raw benchmarks — that's the dashboard's credibility, and their case rests on sovereignty, transparency and price, not raw power.
+## Règles de sélection
 
-Badges: 🏆 top quality (best score) · 💎 best value (score³/blended price, score ≥ 75, free models excluded) · 🪙 budget pick (cheapest with score ≥ 60, free models welcome).
+- Éditeurs suivis : OpenAI, Anthropic, Google, Meta, xAI, Mistral, DeepSeek, Alibaba, Kimi, Z AI, MiniMax, plus tout éditeur suisse évalué.
+- Modèles sortis depuis moins de six mois (douze si l’éditeur n’a rien de plus récent), notés par Artificial Analysis et vendus à un prix public.
+- Pour chaque modèle, le réglage (par exemple « Max » ou « Xhigh ») qui obtient le meilleur indice général.
+- Un modèle qu’un autre modèle du même éditeur égale ou bat à la fois en indice général et en prix est écarté.
+- Par éditeur : les deux meilleurs à l’indice général, plus le moins cher des autres.
+- Un indice non publié reste vide : rien n’est estimé.
 
-## Run locally
+## Lancer l’aperçu
+
+Il faut Node.js 20 ou plus récent et une clé de l’API gratuite d’Artificial Analysis (compte sur leur site). Leur quota est de 100 requêtes par 24 heures ; un aperçu en consomme une à trois.
 
 ```bash
-# 1. Get a free API key at https://artificialanalysis.ai/data-api
-# 2. Put it in .env (never committed):  AA_API_KEY=your_key
-node --env-file=.env pipeline/build.mjs
-
-# Without a key the build still succeeds, keeping the demo scores
-# from models.json and flagging the output with "scores_demo": true.
-node pipeline/build.mjs
-
-# Then open site/index.html (works from file://), or serve the repo root:
-python3 -m http.server 8123   # → http://localhost:8123/site/
+npm install
+AA_API_KEY=votre_cle npm run apercu            # usage général
+AA_API_KEY=votre_cle npm run apercu -- legal   # general, finance, legal, strategy, engineering, health
 ```
 
-## Data sources & attribution
+## Historique
 
-- **[Artificial Analysis](https://artificialanalysis.ai)** — benchmark data (intelligence, coding, agentic evaluations…). This project uses the Artificial Analysis Data API and displays only aggregated per-use-case scores, never their raw datasets. **Attribution required and gladly given: benchmark data © Artificial Analysis.**
-- **[OpenRouter](https://openrouter.ai)** — real-time API prices and context windows (public endpoint).
-- **[LiteLLM](https://github.com/BerriAI/litellm)** — price fallback.
-- **[Apertus](https://huggingface.co/swiss-ai)** (EPFL / ETH Zurich / CSCS) — entered manually; free chat at [chat.publicai.co](https://chat.publicai.co).
-- Subscription prices — maintained by hand in [`data/subscriptions.json`](data/subscriptions.json) (no public API exists), each entry carrying a `verified` flag and date.
+- **13 juillet 2026** : première version. Seize modèles notés par usage avec des pondérations maison, prix d’API et d’abonnement, données recalculées chaque jour par une tâche GitHub et publiées dans ce dépôt, version bilingue sur GitHub Pages.
+- **5 octobre au 19 novembre 2026** : dépôt supprimé par erreur, comparateur vide pendant 45 jours, puis dépôt restauré. Le récit : [Mon comparateur d’IA est resté vide 45 jours](https://romande-ia.ch/articles/comparateur-ia-vide-45-jours).
+- **4 novembre 2026** : Artificial Analysis ferme l’ancienne API utilisée par la première version.
+- **23 novembre 2026** : refonte. Indices d’Artificial Analysis par métier, récupérés par le site côté serveur ; plus de prix d’abonnement ; ajout de l’IA suisse. Les anciens fichiers `data/`, `pipeline/` et la tâche quotidienne sont retirés de ce dépôt. Ils restent dans l’historique Git.
 
-## Repository layout
+## Licence
 
-| Path | Role |
-|---|---|
-| `data/models.json` | Curated model list: OpenRouter ids, Artificial Analysis slugs, editorial fields, fallbacks |
-| `data/subscriptions.json` | Subscription/free-chat prices, maintained by hand |
-| `data/weights.json` | Scoring weights per use case — the transparent heart of the product |
-| `data/latest.json` | **Generated** — never edit by hand |
-| `data/history/` | Daily snapshots |
-| `pipeline/build.mjs` | The whole pipeline, zero dependencies |
-| `site/` | Static demo page (GitHub Pages ready) |
-
-## License
-
-[MIT](LICENSE) © 2026 Médéric Morin (IAtelier)
+MIT, voir [LICENSE](LICENSE). Les données appartiennent à Artificial Analysis.
